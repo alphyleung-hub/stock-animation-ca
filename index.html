@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stock Animation by Keith Li</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body data-state="loading">
+    <div class="app">
+      <header class="bar">
+        <h1 class="mark">Stock Animation by Keith Li</h1>
+        <div class="ask">
+          <form id="form">
+            <label for="ticker">Ticker</label>
+            <input
+              id="ticker"
+              name="ticker"
+              value="NVDA"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="NVDA, AAPL, 0700.HK"
+              aria-describedby="cue"
+            />
+            <button id="play" type="submit">Play</button>
+          </form>
+          <p id="cue" class="cue">Enter a ticker (NVDA, AAPL, 0700.HK) and press Play.</p>
+        </div>
+        <div class="save">
+          <div class="segment lookback" role="radiogroup" aria-label="Lookback range" data-lookback>
+            <button type="button" role="radio" data-span="1y" aria-checked="false" tabindex="-1">1Y</button>
+            <button type="button" role="radio" data-span="3y" aria-checked="false" tabindex="-1">3Y</button>
+            <button type="button" role="radio" data-span="5y" aria-checked="true" tabindex="0">5Y</button>
+          </div>
+          <div class="segment speed" role="radiogroup" aria-label="Playback speed" data-speed>
+            <button type="button" role="radio" data-rate="0.5" aria-checked="false" tabindex="-1">0.5x</button>
+            <button type="button" role="radio" data-rate="1" aria-checked="true" tabindex="0">1x</button>
+            <button type="button" role="radio" data-rate="1.5" aria-checked="false" tabindex="-1">1.5x</button>
+            <button type="button" role="radio" data-rate="2" aria-checked="false" tabindex="-1">2x</button>
+          </div>
+          <button id="replay" type="button" hidden>Replay</button>
+          <button id="download" type="button" hidden>Download MP4</button>
+        </div>
+      </header>
+      <canvas id="stage" width="1920" height="1080"></canvas>
+      <p id="status" role="status">Loading NVDA…</p>
+      <footer class="colophon">
+        <a href="https://www.linkedin.com/in/keithlihk">Created by Keith Li · Follow me on LinkedIn</a>
+        <span class="sep" aria-hidden="true">·</span>
+        <a href="https://github.com/keithligh/stock-animation">Source on GitHub</a>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

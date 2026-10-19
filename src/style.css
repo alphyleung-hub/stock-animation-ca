@@ -1,0 +1,315 @@
+:root {
+  color-scheme: dark;
+  --bg: #07080b;
+  --text: #f4f6f8;
+  --muted: #c5cedd;
+  --quiet: #9aa3b5;
+  --line: #2a3142;
+  --field: #b7c0d0;
+  --control: 38px;
+  font-family: Geist, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-color: #2c3444 var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(1100px 680px at 50% 36%, #141820 0%, var(--bg) 68%);
+  color: var(--text);
+}
+
+::selection {
+  background: #3ddc97;
+  color: #07140e;
+}
+
+.app {
+  width: min(1640px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 12px 0 14px;
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 16px;
+  margin-bottom: 10px;
+}
+
+.mark {
+  margin: 0;
+  font-family: Geist, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.ask {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 12px;
+  row-gap: 6px;
+  min-width: 0;
+  min-height: var(--control);
+}
+
+form {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.cue {
+  margin: 0;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 26rem;
+  color: var(--muted);
+  font: 500 13px/1.35 Geist, sans-serif;
+  text-align: left;
+}
+
+label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+input {
+  width: 232px;
+  height: var(--control);
+  background: #141820;
+  color: var(--text);
+  border: 1px solid var(--field);
+  border-radius: 8px;
+  padding: 0 10px;
+  font: 500 14px "Geist Mono", ui-monospace, monospace;
+  caret-color: #f4f6f8;
+}
+
+input::placeholder {
+  color: #9aa6ba;
+}
+
+input:hover {
+  border-color: #d5dbe6;
+}
+
+button {
+  height: var(--control);
+  background: #f4f7fb;
+  color: #0c0e13;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 12px;
+  font: 600 13px Geist, sans-serif;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ffffff;
+}
+
+button:active {
+  background: #d5dbe6;
+}
+
+.save {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  min-width: max-content;
+  min-height: var(--control);
+}
+
+.segment {
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--control);
+}
+
+.segment button {
+  min-width: 2.75rem;
+  padding: 0 8px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--field);
+  border-radius: 0;
+  margin-left: -1px;
+  font: 600 13px/1 Geist, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.speed button {
+  min-width: 3.15rem;
+}
+
+.segment button:first-child {
+  margin-left: 0;
+  border-radius: 8px 0 0 8px;
+}
+
+.segment button:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.segment button:hover,
+.segment button[aria-checked='true'] {
+  position: relative;
+  z-index: 1;
+}
+
+.segment button[aria-checked='true'] {
+  background: #f4f7fb;
+  color: #0c0e13;
+}
+
+.segment button:hover {
+  background: #171b24;
+  color: var(--text);
+}
+
+.segment button[aria-checked='true']:hover {
+  background: #ffffff;
+  color: #0c0e13;
+}
+
+.segment button:active {
+  background: #10141c;
+}
+
+.segment button[aria-checked='true']:active {
+  background: #d5dbe6;
+  color: #0c0e13;
+}
+
+#replay {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--field);
+}
+
+#replay:hover {
+  background: #171b24;
+  border-color: #d5dbe6;
+}
+
+#replay:active {
+  background: #10141c;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  background: #0c0e13;
+}
+
+#status {
+  min-height: 1.35em;
+  margin: 8px 2px 0;
+  color: var(--muted);
+  font: 500 12px/1.4 "Geist Mono", ui-monospace, monospace;
+}
+
+body[data-state='played'] #status {
+  color: var(--text);
+}
+
+body[data-state='error'] #status {
+  color: #ffc2c8;
+}
+
+body[data-state='encoding'] #status {
+  color: #f7f8fb;
+}
+
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin: 6px 2px 0;
+  color: var(--quiet);
+  font: 400 12px/1.4 Geist, sans-serif;
+}
+
+.colophon a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--quiet) 55%, transparent);
+  text-underline-offset: 2px;
+}
+
+.colophon a:hover {
+  color: var(--muted);
+}
+
+.colophon .sep {
+  color: #6e788c;
+}
+
+button:focus-visible,
+input:focus-visible,
+.colophon a:focus-visible {
+  outline: 2px solid #f4f7fb;
+  outline-offset: 2px;
+}
+
+input:focus-visible {
+  border-color: #f4f7fb;
+}
+
+@media (max-width: 1100px) {
+  .app {
+    width: min(1640px, calc(100% - 24px));
+    padding-top: 12px;
+  }
+
+  .bar {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+    align-items: start;
+  }
+
+  .mark {
+    white-space: normal;
+  }
+
+  .ask,
+  form,
+  .save {
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .save {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  input {
+    width: min(232px, 100%);
+  }
+}

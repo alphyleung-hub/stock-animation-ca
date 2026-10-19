@@ -1,0 +1,40 @@
+name = "stock-animation"
+main = "workers/api/src/index.ts"
+compatibility_date = "2026-10-19"
+workers_dev = true
+
+# Workers Cache sits in front of the Worker. A hit never runs it and never
+# calls Yahoo. The request URL is that cache key, so `d` and `range` stay apart.
+# The Worker also stores one Cache API entry per Yahoo symbol, `d`, and range,
+# so alias spellings of the same range share one Yahoo fetch.
+[cache]
+enabled = true
+
+# `npx wrangler deploy` builds the static app, then uploads this Worker.
+[build]
+command = "npm run build"
+watch_dir = "workers/api/src"
+
+# One Worker: static app plus the /v1 Yahoo relay.
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "none"
+run_worker_first = ["/v1/*"]
+
+[vars]
+# Comma-separated browser origins allowed to read the relay cross-origin.
+# Same-origin requests, including the deployed app, are allowed without being listed.
+# The deployed origin is listed so a cross-origin read of this host stays allowed.
+ALLOWED_ORIGIN = "https://stock-animation.keith-li.workers.dev,http://localhost:5173,http://127.0.0.1:5173"
+
+# 60 misses per minute per key. Keys used: `ip:<addr>` and `global`.
+# Cloudflare enforces this per location. namespace_id is account-unique;
+# change it if 1001 is already used.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 60
+  period = 60
