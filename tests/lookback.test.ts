@@ -39,15 +39,17 @@ describe('lookback control', () => {
     expect(lookbackFromKey('3y', 'Enter')).toBeNull();
   });
 
-  it('places 1Y, 3Y, and 5Y before playback speed, with 5Y selected', () => {
+  it('places 1Y, 3Y, and 5Y in the header before playback speed, with 5Y selected', () => {
     const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
     const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
-    const lookbackAt = header.indexOf('data-lookback');
-    const speedAt = header.indexOf('data-speed');
+    const lookbackAt = html.indexOf('data-lookback');
+    const speedAt = html.indexOf('data-speed');
+    expect(header).toContain('data-lookback');
+    expect(header).not.toContain('data-speed');
     expect(lookbackAt).toBeGreaterThanOrEqual(0);
     expect(speedAt).toBeGreaterThan(lookbackAt);
     expect(header).toContain('aria-label="Lookback range"');
-    expect(header).toContain('aria-label="Playback speed"');
+    expect(html).toContain('aria-label="Playback speed"');
     for (const range of LOOKBACK_RANGES) {
       expect(header).toContain(`data-span="${range}"`);
       expect(header).toContain(`>${range.toUpperCase()}<`);

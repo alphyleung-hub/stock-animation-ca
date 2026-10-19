@@ -45,22 +45,29 @@ describe('playback rate', () => {
 });
 
 describe('play control', () => {
-  it('leads the playback group, after the range and before replay and speed', () => {
+  it('leads the playback group under the film, after the range and before replay and speed', () => {
     const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
     const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
-    const lookbackAt = header.indexOf('data-lookback');
-    const playAt = header.indexOf('id="play"');
-    const replayAt = header.indexOf('id="replay"');
-    const speedAt = header.indexOf('data-speed');
-    const downloadAt = header.indexOf('id="download"');
+    const dock = html.slice(html.indexOf('class="dock"'), html.indexOf('id="status"'));
+    expect(header).toContain('data-lookback');
+    expect(header).not.toContain('id="play"');
+    expect(header).not.toContain('data-speed');
+    expect(header).not.toContain('id="download"');
+    const lookbackAt = html.indexOf('data-lookback');
+    const canvasAt = html.indexOf('id="stage"');
+    const playAt = dock.indexOf('id="play"');
+    const replayAt = dock.indexOf('id="replay"');
+    const speedAt = dock.indexOf('data-speed');
+    const downloadAt = dock.indexOf('id="download"');
     expect(lookbackAt).toBeGreaterThan(0);
-    expect(playAt).toBeGreaterThan(lookbackAt);
+    expect(canvasAt).toBeGreaterThan(lookbackAt);
+    expect(playAt).toBeGreaterThan(0);
     expect(replayAt).toBeGreaterThan(playAt);
     expect(speedAt).toBeGreaterThan(replayAt);
     expect(downloadAt).toBeGreaterThan(speedAt);
-    expect(header).toContain('aria-label="Playback"');
-    expect(header).not.toContain('type="submit"');
-    const play = header.slice(playAt, header.indexOf('</button>', playAt));
+    expect(dock).toContain('aria-label="Playback"');
+    expect(dock).not.toContain('type="submit"');
+    const play = dock.slice(playAt, dock.indexOf('</button>', playAt));
     expect(play).toContain('class="play-label">Play<');
     expect(play).toContain('class="icon-pause"');
   });

@@ -31,16 +31,19 @@ body {
 }
 
 .app {
-  width: min(1640px, calc(100% - 40px));
+  /* Short screens narrow the column so the film and Play share one width and stay on the first screen. */
+  width: min(1640px, calc(100% - 40px), calc((100vh - 9.5rem) * 16 / 9));
+  width: min(1640px, calc(100% - 40px), calc((100svh - 9.5rem) * 16 / 9));
   margin: 0 auto;
   padding: 12px 0 14px;
 }
 
 .bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 10px;
+  gap: 10px 16px;
+  margin-bottom: 16px;
   min-height: var(--control);
 }
 
@@ -55,8 +58,20 @@ body {
   white-space: nowrap;
 }
 
+.player {
+  width: 100%;
+}
+
 .film {
   position: relative;
+}
+
+.dock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .share {
@@ -92,17 +107,10 @@ body {
 
 .subject {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   min-width: 0;
-  min-height: var(--control);
-}
-
-.transport {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
   min-height: var(--control);
 }
 
@@ -115,7 +123,6 @@ body {
 body[data-state='played'] .outcome,
 body[data-state='encoding'] .outcome {
   display: flex;
-  margin-left: 12px;
 }
 
 form {
@@ -297,7 +304,7 @@ canvas {
 
 #status {
   min-height: 1.35em;
-  margin: 8px 2px 0;
+  margin: 12px 2px 0;
   color: var(--muted);
   font: 500 12px/1.4 "Geist Mono", ui-monospace, monospace;
 }
@@ -349,55 +356,33 @@ input:focus-visible {
   border-color: #f4f7fb;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 760px) {
   .app {
-    width: min(1640px, calc(100% - 24px));
-    padding-top: 12px;
-  }
-
-  .bar {
-    flex-wrap: wrap;
-    row-gap: 8px;
-    align-items: center;
+    width: min(1640px, calc(100% - 24px), calc((100vh - 9.5rem) * 16 / 9));
+    width: min(1640px, calc(100% - 24px), calc((100svh - 9.5rem) * 16 / 9));
   }
 
   .mark {
-    flex: 1 0 100%;
     white-space: normal;
   }
 
-  .transport {
-    margin-left: auto;
-  }
-}
-
-@media (max-width: 760px) {
   .subject {
-    flex: 1 0 100%;
-  }
-
-  .transport {
-    margin-left: 0;
-    flex-wrap: wrap;
-    row-gap: 8px;
+    flex: 1 1 100%;
   }
 
   form {
     flex: 1 1 auto;
     min-width: 0;
-    max-width: 232px;
   }
 
   input {
     width: 100%;
+    max-width: 232px;
   }
 }
 
 @media (max-width: 520px) {
-  .transport,
-  body[data-state='played'] .outcome,
-  body[data-state='encoding'] .outcome {
-    flex: 1 0 100%;
-    margin-left: 0;
+  input {
+    max-width: none;
   }
 }
