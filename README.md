@@ -1,5 +1,7 @@
 # Stock Animation by Keith Li
 
+English · [繁體中文](README.zh-Hant.md)
+
 Pick a stock and get a 30-second film of its price, ready to post.
 
 Stock Animation turns one share's daily closing prices into a short animated chart. The line draws itself from the first close in your range to the latest one, stops on the moments that mattered, and ends with a single sentence that sums up the whole run. You can watch it in the browser, then download it as an MP4 and share it on social media.
