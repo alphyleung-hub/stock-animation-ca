@@ -515,11 +515,9 @@ function drawHeader(ctx: Ctx, animation: Animation, readout: FrameReadout, frame
     ctx.restore();
   }
 
-  if (phase === 'verdict') {
-    const appear = damp((frame - PLAY_END) / 45, 10);
-    drawVerdict(ctx, animation.currency, readout, appear);
-    return;
-  }
+  // The summary line runs live from frame one, tracking the price as it draws.
+  drawVerdict(ctx, animation.currency, readout, 1);
+  if (phase === 'verdict') return;
 
   ctx.font = '500 18px Geist, sans-serif';
   ctx.fillStyle = '#d5dbe6';
