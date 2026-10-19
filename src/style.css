@@ -42,8 +42,11 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 10px 16px;
   margin-bottom: 16px;
+  /* Same 48/1920 inset the film uses, so the bar lines up with the title and cards. */
+  padding-inline: calc(48 / 1920 * 100%);
   min-height: var(--control);
 }
 
@@ -70,8 +73,9 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .share {
@@ -304,7 +308,9 @@ canvas {
 
 #status {
   min-height: 1.35em;
-  margin: 12px 2px 0;
+  margin: 12px 0 0;
+  padding-inline: calc(48 / 1920 * 100%);
+  text-align: center;
   color: var(--muted);
   font: 500 12px/1.4 "Geist Mono", ui-monospace, monospace;
 }
@@ -325,8 +331,9 @@ body[data-state='encoding'] #status {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: center;
   gap: 4px 8px;
-  margin: 6px 2px 0;
+  margin: 6px 0 0;
   color: var(--quiet);
   font: 400 12px/1.4 Geist, sans-serif;
 }
