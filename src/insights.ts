@@ -2,11 +2,11 @@ export const FPS = 60;
 /** 30 seconds at 60 fps. */
 export const FRAME_COUNT = FPS * 30;
 /** Ticker and the starting close. The ending stays off this beat. */
-export const HOOK_END = FPS * 2;
+export const HOOK_END = 0;
 /** Open axis, still on the first close. */
-export const REWIND_END = HOOK_END + Math.round(FPS * 0.5);
+export const REWIND_END = HOOK_END;
 /** The line leaves the start. */
-export const ESTABLISH_END = REWIND_END + Math.round(FPS * 0.5);
+export const ESTABLISH_END = REWIND_END;
 /** Full-path verdict. */
 export const PLAY_END = FRAME_COUNT - FPS * 3;
 

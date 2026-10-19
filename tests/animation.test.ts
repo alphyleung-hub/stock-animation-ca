@@ -40,9 +40,8 @@ describe('price animation', () => {
     expect(priceAt(animation, ESTABLISH_END - 1)).toBe(100);
     expect(priceAt(animation, FRAME_COUNT - 1)).toBe(last);
     expect(percentChange(last, 100)).toBeCloseTo(1.17);
-    expect(framePhase(0)).toBe('hook');
-    expect(framePhase(HOOK_END)).toBe('hook');
-    expect(framePhase(ESTABLISH_END)).toBe('travel');
+    // The line leaves the first close on frame one: no hold before it travels.
+    expect(framePhase(0)).toBe('travel');
     expect(framePhase(PLAY_END)).toBe('verdict');
     expect(framePhase(FRAME_COUNT - 1)).toBe('verdict');
 
@@ -173,7 +172,7 @@ describe('price animation', () => {
     const frame = ESTABLISH_END + Math.floor((PLAY_END - ESTABLISH_END) * 0.35);
     const reveal = animation.reveal[frame] ?? 0;
     const right = animation.windowRight[frame] ?? 0;
-    expect(animation.reveal[72]).toBe(0);
+    expect(animation.reveal[0]).toBe(0);
     expect(animation.windowRight[72] ?? 0).toBeLessThan(39);
     expect(right).toBeGreaterThan(reveal + 1);
     expect((right - reveal) / Math.max(right, 1)).toBeGreaterThan(0.18);
