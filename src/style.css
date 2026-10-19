@@ -136,8 +136,15 @@ form {
   min-width: 0;
 }
 
-label,
 .cue {
+  order: -1;
+  margin: 0 12px 0 0;
+  color: #c9cfda;
+  font: 500 14px/1.3 Geist, sans-serif;
+  white-space: nowrap;
+}
+
+label {
   position: absolute;
   width: 1px;
   height: 1px;
