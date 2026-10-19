@@ -60,11 +60,11 @@ body {
 }
 
 .share {
-  /* Centred in the caption channel under the verdict ink (y 276) and above the chart (y 372). */
+  /* Centred in the caption channel under the verdict ink (y 300) and above the chart (y 392). */
   position: absolute;
   left: 0;
   right: 0;
-  top: calc((276 + 372) / 2 / 1080 * 100%);
+  top: calc((300 + 392) / 2 / 1080 * 100%);
   z-index: 1;
   margin: 0;
   transform: translateY(-50%);
@@ -92,11 +92,10 @@ body {
 
 .ask {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
   column-gap: 12px;
-  row-gap: 6px;
   min-width: 0;
   min-height: var(--control);
 }
@@ -114,6 +113,9 @@ form {
   flex: 0 1 auto;
   min-width: 0;
   max-width: 26rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: var(--muted);
   font: 500 13px/1.35 Geist, sans-serif;
   text-align: left;

@@ -72,10 +72,10 @@ interface Box {
 
 const WIDTH = 1920;
 const HEIGHT = 1080;
-// Caption channel y 276–372, under the verdict ink and above the chart. Bottom stays 1028.
-const PANEL = { x: 48, y: 372, w: 1824, h: 656 };
+// Caption channel y 300–392, under the verdict ink and above the chart. Bottom stays 1028.
+const PANEL = { x: 48, y: 392, w: 1824, h: 636 };
 // 26px inside the panel. Bottom stays at 954 so the month labels keep their pad.
-const PLOT = { x: 220, y: 398, w: 1608, h: 556 };
+const PLOT = { x: 220, y: 418, w: 1608, h: 536 };
 /** Share of the plot kept clear on the right so the endpoint, NOW, and callouts are not clipped. */
 export const RIGHT_PAD_RATIO = 0.09;
 export const PLOT_FRAME = PLOT;
@@ -553,8 +553,8 @@ function drawVerdict(ctx: Ctx, currency: string, readout: FrameReadout, appear: 
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
   let x = 48;
-  // Clears the cards (bottom 236) and stops above the caption channel (y 276).
-  const y = 266;
+  // About 30px under the cards (bottom 236), above the caption channel (y 300).
+  const y = 292;
   for (const part of parts) {
     ctx.fillStyle = part.color;
     ctx.fillText(part.text, x, y);
