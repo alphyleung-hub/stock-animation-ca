@@ -339,20 +339,21 @@ body[data-state='encoding'] #status {
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: center;
-  gap: 4px 8px;
-  margin: 6px 0 0;
-  color: var(--quiet);
-  font: 400 12px/1.4 Geist, sans-serif;
+  gap: 6px 12px;
+  margin: 14px 0 0;
+  padding-bottom: 20px;
+  color: var(--muted);
+  font: 500 17px/1.5 Geist, sans-serif;
 }
 
 .colophon a {
   color: inherit;
   text-decoration-color: color-mix(in srgb, var(--quiet) 55%, transparent);
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
 }
 
 .colophon a:hover {
-  color: var(--muted);
+  color: #f4f7fb;
 }
 
 .colophon .sep {
