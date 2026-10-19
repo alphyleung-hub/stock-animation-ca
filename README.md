@@ -1,6 +1,6 @@
 # Stock Animation
 
-Stock Animation plays a US or Hong Kong share price as a short film. You choose the ticker and how many years to include. The story opens on the first close in that range and ends on the latest close.
+Stock Animation turns a US or Hong Kong share's price history into a short film you can download as an MP4 and share on social media. You choose the ticker and how many years to include. The story opens on the first close in that range and ends on the latest close.
 
 **Live:** https://stock-animation.keith-li.workers.dev
 
@@ -10,7 +10,7 @@ Stock Animation plays a US or Hong Kong share price as a short film. You choose 
 2. Watch the film.
 3. Pick a range (**1Y**, **3Y**, or **5Y**) and a speed (**0.5×**, **1×**, **1.5×**, or **2×**). The page starts at **5Y** and **1×**. Those choices stay until you close the tab.
 4. Press Replay to watch it again.
-5. When the film finishes, press Download MP4. The video is created on your computer.
+5. When the film finishes, press Download MP4 and share it on social media. The video is created on your computer.
 
 The speed control only changes how fast you watch. The downloaded film stays about 30 seconds.
 

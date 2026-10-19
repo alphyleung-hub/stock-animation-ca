@@ -19,8 +19,8 @@ import {
 } from './playback';
 import { buildAnimation, drawFrame, drawLoading, FRAME_COUNT, type Animation } from './render';
 
-const PLAYING_HINT = 'After the film ends, Download MP4 appears — encode happens in your browser.';
-const FINISHED_HINT = 'Film finished. Click Download MP4 to save it.';
+const PLAYING_HINT = 'When it finishes, download the MP4 and share it.';
+const FINISHED_HINT = 'Film finished. Download the MP4 and share it on social media.';
 
 const form = document.querySelector<HTMLFormElement>('#form');
 const tickerInput = document.querySelector<HTMLInputElement>('#ticker');
