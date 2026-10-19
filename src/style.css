@@ -60,11 +60,11 @@ body {
 }
 
 .share {
-  /* Open band under the end-frame verdict (~280) and above the chart panel (304). */
+  /* Centred in the caption channel under the verdict ink (y 276) and above the chart (y 372). */
   position: absolute;
   left: 0;
   right: 0;
-  top: calc((280 + 304) / 2 / 1080 * 100%);
+  top: calc((276 + 372) / 2 / 1080 * 100%);
   z-index: 1;
   margin: 0;
   transform: translateY(-50%);
