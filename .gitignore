@@ -10,5 +10,10 @@ logs/
 review/
 docs/*-PASS.md
 docs/*-CLEAN.md
+# Local market extracts. Tests keep synthetic series only.
+*.yahoo.json
+*.chart.json
+cache/
+chart-dumps/
 .DS_Store
 Thumbs.db
