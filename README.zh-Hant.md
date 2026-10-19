@@ -6,9 +6,15 @@
 
 Stock Animation 把一隻股票的每日收市價變成一段動畫走勢圖。線條由你所選時段的第一個收市價開始，一路畫到最新收市價，在關鍵時刻放慢，最後用一句話總結整段走勢。你可以先在瀏覽器觀看，再下載成 MP4，分享到社交媒體。
 
+[![立即製作短片](https://img.shields.io/badge/▶_立即製作短片-stock--animation.keith--li.workers.dev-137752?style=for-the-badge)](https://stock-animation.keith-li.workers.dev)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/keithligh/stock-animation?style=for-the-badge)](https://github.com/keithligh/stock-animation/stargazers)
+
 **[立即製作短片](https://stock-animation.keith-li.workers.dev)**。免費，毋須註冊，打開網頁時會先播放 NVDA，讓你先看看效果。
 
 ![NVDA 完整短片：五年收市價走勢，標示起點、最高位及最低位，三張摘要卡片，以及結尾總結](docs/film.png)
+
+⭐ **如果 Stock Animation 幫你講好一隻股票的故事，[請在 GitHub 給它一粒星](https://github.com/keithligh/stock-animation)。** 星星能讓更多人發現這個項目，也是支持 Keith 繼續開發的動力。
 
 ## 製作短片
 
@@ -50,3 +56,5 @@ npm run dev
 ## 作者
 
 Stock Animation 由 Keith Li 製作。歡迎在 [LinkedIn](https://www.linkedin.com/in/keithlihk) 及 [GitHub](https://github.com/keithligh) 找到他。
+
+製作了喜歡的短片？⭐ [為這個項目加星](https://github.com/keithligh/stock-animation)，讓下一個人也能找到它。

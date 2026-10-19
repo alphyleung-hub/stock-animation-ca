@@ -6,9 +6,15 @@ Pick a stock and get a 30-second film of its price, ready to post.
 
 Stock Animation turns one share's daily closing prices into a short animated chart. The line draws itself from the first close in your range to the latest one, stops on the moments that mattered, and ends with a single sentence that sums up the whole run. You can watch it in the browser, then download it as an MP4 and share it on social media.
 
+[![Make a film](https://img.shields.io/badge/▶_Make_a_film-stock--animation.keith--li.workers.dev-137752?style=for-the-badge)](https://stock-animation.keith-li.workers.dev)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/keithligh/stock-animation?style=for-the-badge)](https://github.com/keithligh/stock-animation/stargazers)
+
 **[Make a film now](https://stock-animation.keith-li.workers.dev)**. It's free, there's no sign-up, and the page plays NVDA while you decide.
 
 ![The finished NVDA film: five years of closes with the start, peak and low marked, three summary cards, and the closing verdict](docs/film.png)
+
+⭐ **If Stock Animation helped you tell a stock's story, [give it a star on GitHub](https://github.com/keithligh/stock-animation).** Stars are how other people find the project, and they keep Keith building it.
 
 ## Making a film
 
@@ -50,3 +56,5 @@ Then open [localhost:5173](http://localhost:5173). If you build on it, please ke
 ## Made by
 
 Stock Animation is made by Keith Li. You can find him on [LinkedIn](https://www.linkedin.com/in/keithlihk) and [GitHub](https://github.com/keithligh).
+
+Made a film you liked? ⭐ [Star the repository](https://github.com/keithligh/stock-animation) so the next person can find it too.
