@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { PLAYBACK_RATES, anchorClock, frameAt, parsePlaybackRate } from '../src/playback';
 
@@ -40,5 +41,39 @@ describe('playback rate', () => {
       const later = frameAt(now + 1000, anchored, rate, FRAMES);
       expect(later).toBe(frame + 60 * rate);
     }
+  });
+});
+
+describe('play control', () => {
+  it('leads the playback group, after the range and before replay and speed', () => {
+    const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+    const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
+    const lookbackAt = header.indexOf('data-lookback');
+    const playAt = header.indexOf('id="play"');
+    const replayAt = header.indexOf('id="replay"');
+    const speedAt = header.indexOf('data-speed');
+    const downloadAt = header.indexOf('id="download"');
+    expect(lookbackAt).toBeGreaterThan(0);
+    expect(playAt).toBeGreaterThan(lookbackAt);
+    expect(replayAt).toBeGreaterThan(playAt);
+    expect(speedAt).toBeGreaterThan(replayAt);
+    expect(downloadAt).toBeGreaterThan(speedAt);
+    expect(header).toContain('aria-label="Playback"');
+    expect(header).not.toContain('type="submit"');
+    const play = header.slice(playAt, header.indexOf('</button>', playAt));
+    expect(play).toContain('class="play-label">Play<');
+    expect(play).toContain('class="icon-pause"');
+  });
+
+  it('pauses on the current frame and resumes without loading again', () => {
+    const main = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8');
+    const pause = main.slice(main.indexOf('function pausePlayback'), main.indexOf('function resumePlayback'));
+    const resume = main.slice(main.indexOf('function resumePlayback'), main.indexOf('function syncTransport'));
+    expect(pause).toContain('playing = false');
+    expect(pause).not.toContain('loadTicker');
+    expect(pause).not.toContain('generation');
+    expect(resume).toContain('anchorClock(performance.now(), shownFrame, playbackRate)');
+    expect(resume).not.toContain('loadTicker');
+    expect(main).toContain('playLoadsField()');
   });
 });

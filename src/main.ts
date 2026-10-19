@@ -55,9 +55,21 @@ if (!ctx) throw new Error('Canvas is unavailable');
 
 const context: CanvasRenderingContext2D = ctx;
 const ticker: HTMLInputElement = tickerInput;
+const play: HTMLButtonElement = playButton;
+const playLabelEl = play.querySelector<HTMLSpanElement>('.play-label');
+const playIconEl = play.querySelector<SVGElement>('.icon-play');
+const pauseIconEl = play.querySelector<SVGElement>('.icon-pause');
 const saveButton: HTMLButtonElement = downloadButton;
 const replay: HTMLButtonElement = replayButton;
 const status: HTMLParagraphElement = statusLine;
+
+if (!playLabelEl || !playIconEl || !pauseIconEl) {
+  throw new Error('Page is missing its controls');
+}
+
+const playLabel: HTMLSpanElement = playLabelEl;
+const playIcon: SVGElement = playIconEl;
+const pauseIcon: SVGElement = pauseIconEl;
 
 const SPEED_STORAGE_KEY = 'sa-playback-rate';
 
@@ -102,6 +114,7 @@ speedGroup.addEventListener('keydown', (event) => {
 
 saveButton.hidden = true;
 replay.hidden = true;
+syncTransport();
 
 void document.fonts.ready.then(() => {
   if (document.body.dataset.state === 'loading') {
@@ -112,7 +125,23 @@ void document.fonts.ready.then(() => {
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  void loadTicker(tickerInput.value);
+  void loadTicker(ticker.value);
+});
+
+play.addEventListener('click', () => {
+  onPlay();
+});
+
+ticker.addEventListener('input', () => {
+  syncTransport();
+});
+
+window.addEventListener('keydown', (event) => {
+  if (event.key !== ' ' || event.repeat) return;
+  const target = event.target;
+  if (target instanceof Element && target.closest('input, textarea, select, button, a, [role="radio"]')) return;
+  event.preventDefault();
+  onPlay();
 });
 
 replay.addEventListener('click', () => {
@@ -142,6 +171,7 @@ window.__anim = {
     playing = false;
     shownFrame = frame;
     drawFrame(context, animation, frame);
+    syncTransport();
   },
   finish() {
     if (!animation) return;
@@ -169,6 +199,7 @@ async function loadTicker(raw: string): Promise<void> {
     setStatus('Use a ticker like 0700.HK or NVDA.');
     document.body.dataset.state = 'error';
     replay.hidden = !animation;
+    syncTransport();
     return;
   }
   exportAbort?.abort();
@@ -182,6 +213,7 @@ async function loadTicker(raw: string): Promise<void> {
   saveButton.textContent = 'Download MP4';
   replay.hidden = true;
   document.body.dataset.state = 'loading';
+  syncTransport();
   drawLoading(context, display);
   setStatus(`Loading ${display}…`);
   const range = lookback;
@@ -208,6 +240,7 @@ async function loadTicker(raw: string): Promise<void> {
     if (abort.signal.aborted) return;
     document.body.dataset.state = 'error';
     replay.hidden = true;
+    syncTransport();
     setStatus(error instanceof Error ? error.message : 'Could not load that ticker.');
   }
 }
@@ -249,12 +282,74 @@ function restartPlayback(): void {
   startPlayback();
 }
 
+function onPlay(): void {
+  if (exportAbort) return;
+  if (playLoadsField()) {
+    void loadTicker(ticker.value);
+    return;
+  }
+  if (playing) {
+    pausePlayback();
+    return;
+  }
+  if (!animation || shownFrame >= FRAME_COUNT - 1) {
+    if (animation) restartPlayback();
+    else void loadTicker(ticker.value);
+    return;
+  }
+  resumePlayback();
+}
+
+/** Play loads the field only when it names a different valid ticker. */
+function playLoadsField(): boolean {
+  if (!animation) return true;
+  const typed = canonicalizeTicker(ticker.value);
+  return typed !== null && typed !== animation.symbol;
+}
+
+function pausePlayback(): void {
+  if (!playing || !animation) return;
+  playing = false;
+  syncTransport();
+  setStatus('Paused.');
+}
+
+function resumePlayback(): void {
+  if (!animation || playing || exportAbort || document.body.dataset.state === 'loading') return;
+  if (shownFrame >= FRAME_COUNT - 1) {
+    restartPlayback();
+    return;
+  }
+  const gen = generation;
+  playing = true;
+  document.body.dataset.state = 'ready';
+  replay.hidden = false;
+  saveButton.hidden = true;
+  saveButton.textContent = 'Download MP4';
+  clockStart = anchorClock(performance.now(), shownFrame, playbackRate);
+  syncTransport();
+  setStatus(PLAYING_HINT);
+  requestAnimationFrame((now) => {
+    if (gen !== generation) return;
+    tick(now, gen);
+  });
+}
+
+function syncTransport(): void {
+  const showPause = playing && !playLoadsField();
+  play.disabled = exportAbort !== null;
+  playLabel.textContent = showPause ? 'Pause' : 'Play';
+  playIcon.toggleAttribute('hidden', showPause);
+  pauseIcon.toggleAttribute('hidden', !showPause);
+}
+
 function startPlayback(): void {
   const gen = generation;
   playing = true;
   shownFrame = 0;
   if (animation) drawFrame(context, animation, 0);
   clockStart = performance.now();
+  syncTransport();
   requestAnimationFrame((now) => {
     if (gen !== generation) return;
     tick(now, gen);
@@ -280,6 +375,7 @@ function markFinished(): void {
   saveButton.hidden = false;
   saveButton.textContent = 'Download MP4';
   replay.hidden = !animation;
+  syncTransport();
   setStatus(FINISHED_HINT);
 }
 
@@ -292,6 +388,7 @@ async function download(current: Animation): Promise<void> {
   saveButton.textContent = '0% · Cancel';
   replay.hidden = true;
   playing = false;
+  syncTransport();
   try {
     const result = await exportAnimation(current, (frame, total) => {
       if (gen !== generation) return;
@@ -328,6 +425,7 @@ async function download(current: Animation): Promise<void> {
         setStatus(FINISHED_HINT);
       }
       replay.hidden = !animation || document.body.dataset.state === 'loading';
+      syncTransport();
     }
   }
 }

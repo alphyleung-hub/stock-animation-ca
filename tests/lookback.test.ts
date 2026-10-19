@@ -39,22 +39,22 @@ describe('lookback control', () => {
     expect(lookbackFromKey('3y', 'Enter')).toBeNull();
   });
 
-  it('places 1Y, 3Y, and 5Y beside speed, with 5Y selected', () => {
+  it('places 1Y, 3Y, and 5Y before playback speed, with 5Y selected', () => {
     const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-    const save = html.slice(html.indexOf('class="save"'), html.indexOf('</header>'));
-    const lookbackAt = save.indexOf('data-lookback');
-    const speedAt = save.indexOf('data-speed');
+    const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
+    const lookbackAt = header.indexOf('data-lookback');
+    const speedAt = header.indexOf('data-speed');
     expect(lookbackAt).toBeGreaterThanOrEqual(0);
     expect(speedAt).toBeGreaterThan(lookbackAt);
-    expect(save).toContain('aria-label="Lookback range"');
-    expect(save).toContain('aria-label="Playback speed"');
+    expect(header).toContain('aria-label="Lookback range"');
+    expect(header).toContain('aria-label="Playback speed"');
     for (const range of LOOKBACK_RANGES) {
-      expect(save).toContain(`data-span="${range}"`);
-      expect(save).toContain(`>${range.toUpperCase()}<`);
+      expect(header).toContain(`data-span="${range}"`);
+      expect(header).toContain(`>${range.toUpperCase()}<`);
     }
-    const five = save.slice(save.indexOf('data-span="5y"') - 120, save.indexOf('data-span="5y"') + 40);
+    const five = header.slice(header.indexOf('data-span="5y"') - 120, header.indexOf('data-span="5y"') + 40);
     expect(five).toContain('aria-checked="true"');
-    expect(save.slice(save.indexOf('data-span="1y"') - 80, save.indexOf('data-span="1y"') + 40)).toContain(
+    expect(header.slice(header.indexOf('data-span="1y"') - 80, header.indexOf('data-span="1y"') + 40)).toContain(
       'aria-checked="false"',
     );
   });

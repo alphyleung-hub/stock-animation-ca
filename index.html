@@ -10,7 +10,7 @@
     <div class="app">
       <header class="bar">
         <h1 class="mark">Stock Animation by Keith Li</h1>
-        <div class="ask">
+        <div class="subject">
           <form id="form">
             <label for="ticker">Ticker</label>
             <input
@@ -22,23 +22,33 @@
               placeholder="NVDA, AAPL, 0700.HK"
               aria-describedby="cue"
             />
-            <button id="play" type="submit">Play</button>
+            <p id="cue" class="cue">Enter a ticker (NVDA, AAPL, 0700.HK) and press Play.</p>
           </form>
-          <p id="cue" class="cue">Try NVDA, AAPL or 0700.HK</p>
-        </div>
-        <div class="save">
           <div class="segment lookback" role="radiogroup" aria-label="Lookback range" data-lookback>
             <button type="button" role="radio" data-span="1y" aria-checked="false" tabindex="-1">1Y</button>
             <button type="button" role="radio" data-span="3y" aria-checked="false" tabindex="-1">3Y</button>
             <button type="button" role="radio" data-span="5y" aria-checked="true" tabindex="0">5Y</button>
           </div>
+        </div>
+        <div class="transport" role="group" aria-label="Playback">
+          <button id="play" type="button">
+            <svg class="icon-play" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M5.4 3.05 12.55 8 5.4 12.95Z" fill="currentColor" />
+            </svg>
+            <svg class="icon-pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false" hidden>
+              <path d="M4.2 3h2.35v10H4.2zm5.25 0H11.8v10H9.45z" fill="currentColor" />
+            </svg>
+            <span class="play-label">Play</span>
+          </button>
+          <button id="replay" type="button" hidden>Replay</button>
           <div class="segment speed" role="radiogroup" aria-label="Playback speed" data-speed>
             <button type="button" role="radio" data-rate="0.5" aria-checked="false" tabindex="-1">0.5x</button>
             <button type="button" role="radio" data-rate="1" aria-checked="true" tabindex="0">1x</button>
             <button type="button" role="radio" data-rate="1.5" aria-checked="false" tabindex="-1">1.5x</button>
             <button type="button" role="radio" data-rate="2" aria-checked="false" tabindex="-1">2x</button>
           </div>
-          <button id="replay" type="button" hidden>Replay</button>
+        </div>
+        <div class="outcome">
           <button id="download" type="button" hidden>Download MP4</button>
         </div>
       </header>
