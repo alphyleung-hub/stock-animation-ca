@@ -14,7 +14,7 @@ Stock Animation 把一隻股票的每日收市價變成一段動畫走勢圖。�
 
 ![NVDA 完整短片：五年收市價走勢，標示起點、最高位及最低位，三張摘要卡片，以及結尾總結](docs/film.png)
 
-⭐ **如果 Stock Animation 幫你講好一隻股票的故事，[請在 GitHub 給它一粒星](https://github.com/keithligh/stock-animation)。** 星星能讓更多人發現這個項目，也是支持 Keith 繼續開發的動力。
+⭐ **如果 Stock Animation 幫你講好一隻股票的故事，[請在 GitHub 給它一顆星](https://github.com/keithligh/stock-animation)。** 星星能讓更多人發現這個項目，也是支持 Keith 繼續開發的動力。
 
 ## 製作短片
 
