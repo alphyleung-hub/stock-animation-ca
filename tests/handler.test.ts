@@ -125,6 +125,26 @@ describe('chart relay', () => {
     expect(response.headers.get('Cache-Control')).toBe('no-store');
   });
 
+  it('serves every relay response as nosniff JSON, even an HTML 404 from Yahoo', async () => {
+    const missing = harness({ status: 404, body: '<html>gone</html>', contentType: 'text/html' });
+    const response = await missing.run('/v1/chart/NVDA.US?d=2026-10-16');
+    expect(response.status).toBe(404);
+    expect(response.headers.get('Content-Type')).toBe('application/json; charset=utf-8');
+    expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff');
+    const invalid = await missing.run('/v1/chart/NVDA?d=2026-10-16');
+    expect(invalid.headers.get('X-Content-Type-Options')).toBe('nosniff');
+  });
+
+  it('answers 503 when the Yahoo fetch throws', async () => {
+    const api = harness();
+    api.deps.fetch = async () => {
+      throw new TypeError('network down');
+    };
+    const response = await api.run('/v1/chart/NVDA.US?d=2026-10-16');
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ error: 'upstream' });
+  });
+
   it('calls Yahoo once per symbol and session date, then serves the shared cache', async () => {
     const cache = memoryCache();
     const miss = harness({ cache, body: '{"ok":1}' });

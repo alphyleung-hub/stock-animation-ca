@@ -100,20 +100,22 @@ export async function handleChartRequest(
     return json({ error: 'rate_limited' }, 429, 'no-store', originHeader(origin, pageOrigin, allowed));
   }
 
-  const upstream = await deps.fetch(yahooChartUrl(mapped.yahoo, range), {
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': BROWSER_USER_AGENT,
-    },
-  });
+  let upstream: Response;
+  try {
+    upstream = await deps.fetch(yahooChartUrl(mapped.yahoo, range), {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': BROWSER_USER_AGENT,
+      },
+    });
+  } catch {
+    return json({ error: 'upstream' }, 503, 'no-store', originHeader(origin, pageOrigin, allowed));
+  }
 
   if (upstream.status === 404) {
     const response = passthrough(upstream, 404, `public, max-age=${DAY_SECONDS}`);
     store(ctx, deps.cache, cacheKey, response);
     return cors(response, origin, pageOrigin, allowed, null);
-  }
-  if (upstream.status === 429 || upstream.status >= 500) {
-    return json({ error: 'upstream' }, 503, 'no-store', originHeader(origin, pageOrigin, allowed));
   }
   if (!upstream.ok) {
     return json({ error: 'upstream' }, 503, 'no-store', originHeader(origin, pageOrigin, allowed));
@@ -140,8 +142,9 @@ function requestedRange(url: URL): LookbackRange | null {
 
 function passthrough(upstream: Response, status: number, cacheControl: string): Response {
   const headers = new Headers();
-  headers.set('Content-Type', upstream.headers.get('Content-Type') ?? 'application/json; charset=utf-8');
+  headers.set('Content-Type', 'application/json; charset=utf-8');
   headers.set('Cache-Control', cacheControl);
+  headers.set('X-Content-Type-Options', 'nosniff');
   return new Response(upstream.body, { status, headers });
 }
 
@@ -195,6 +198,7 @@ function json(body: unknown, status: number, cacheControl: string, allowOrigin: 
   const headers = new Headers({
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': cacheControl,
+    'X-Content-Type-Options': 'nosniff',
     Vary: 'Origin',
   });
   if (allowOrigin) headers.set('Access-Control-Allow-Origin', allowOrigin);
