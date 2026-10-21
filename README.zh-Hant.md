@@ -42,7 +42,7 @@ Stock Animation 把一隻股票的每日收市價變成一段動畫走勢圖。�
 
 ## 緣起
 
-Stock Animation 的靈感來自 ke11 的 [longbridge-remotion-charts](https://github.com/ke11/longbridge-remotion-charts)，是 Keith 在 Threads 上看到的項目。它把港股及美股的股價變成投資組合及比較走勢的動畫圖表，是個很好的點子。它在你自己的電腦上以 Node.js 運行，透過你的長橋（Longbridge）證券帳戶及其命令列工具讀取股價，再以 Remotion 製作影片，而 Remotion 以 FFmpeg 進行編碼。Keith 想知道，能否省去這些設定，同樣做出這類短片，讓任何人都能在瀏覽器中免費使用。
+Stock Animation 的靈感來自 ke11 的 [longbridge-remotion-charts](https://github.com/ke11/longbridge-remotion-charts)，是 Keith 在 Threads 上看到的項目。它把港股及美股的股價變成投資組合及比較走勢的動畫圖表，是個很好的點子。它在你自己的電腦上以 Node.js 運行，透過你的長橋（Longbridge）證券帳戶及其命令列工具讀取股價，再以 Remotion 製作影片，而 Remotion 以 FFmpeg 進行編碼。Keith 選擇不使用這些工具，改為製作一個任何人都能在瀏覽器中免費使用的版本。
 
 因此，Stock Animation 是從零開始完全重寫的項目，與該項目沒有任何共用程式碼，並已逐個檔案核對。它改用 Yahoo Finance 免費的每日收市價，而非證券商的數據；在瀏覽器中以 WebCodecs 製作影片，完全不用 Remotion 及 FFmpeg；並免費運行於 Cloudflare，無需安裝任何東西，也無需開設帳戶：打開網站，輸入股票代號，下載 MP4 即可。本項目以 Grok Bot 及 Grok Build 打造。
 
