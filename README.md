@@ -37,7 +37,7 @@ Three cards stay on screen the whole time: the high and low for the range, the d
 - **How recent it is.** The film ends on the last trading day that has finished, in that market's own time zone (Hong Kong or New York).
 - **Which markets work.** US and Hong Kong stocks only for now.
 - **The download.** Your browser makes the video on your own computer, so nothing is uploaded. Current Chrome, Edge and Safari save an MP4. A browser that can't make MP4 saves a WebM instead.
-- **It's quick for everyone.** Prices for each stock are kept on a shared cache, so the second person to ask for a ticker gets it instantly and Yahoo is only asked again after the next market close.
+- **It's quick for everyone.** Prices for each stock are kept on a shared cache at each Cloudflare data center, so the next person there to ask for a ticker gets it instantly and Yahoo is only asked again after the next market close.
 - **It isn't advice.** The film shows what a price did in the past. It doesn't recommend buying or selling anything.
 
 ## Why this exists
