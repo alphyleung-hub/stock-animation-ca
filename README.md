@@ -40,6 +40,14 @@ Three cards stay on screen the whole time: the high and low for the range, the d
 - **It's quick for everyone.** Prices for each stock are kept on a shared cache, so the second person to ask for a ticker gets it instantly and Yahoo is only asked again after the next market close.
 - **It isn't advice.** The film shows what a price did in the past. It doesn't recommend buying or selling anything.
 
+## Why this exists
+
+Stock Animation was inspired by [longbridge-remotion-charts](https://github.com/ke11/longbridge-remotion-charts) by ke11, a project Keith came across on Threads. It turns Hong Kong and US stock prices into animated portfolio and comparison charts, and it's a lovely idea. It runs on your own computer with Node.js, reads prices through your Longbridge brokerage account and the Longbridge command-line tool, and renders the video with Remotion. Keith wanted to see whether the same kind of film could be made with none of that setup, so anyone could make one for free in a browser.
+
+So Stock Animation is a complete rewrite from scratch, and it shares no code with that project; this was checked file by file. It uses Yahoo Finance's free daily closes instead of a brokerage feed, makes the video in your browser with WebCodecs instead of Remotion, and runs free on Cloudflare with nothing to install and no account to open: visit the site, type a ticker, download the MP4. It was built with Grok Bot and Grok Build.
+
+This is what open source does well: people trading ideas in public and building on each other's work.
+
 ## Running it yourself
 
 Stock Animation is open source under the [MIT License](LICENSE). To run your own copy you need Node.js 22:
