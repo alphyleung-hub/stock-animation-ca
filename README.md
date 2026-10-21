@@ -29,7 +29,7 @@ The speed only changes how you watch. The downloaded file is always the full 30 
 
 The film opens on the first closing price in your range and starts drawing straight away. As the line moves, it labels the start, the highest close and the lowest close, each with its price and date. When the price passes a big moment, such as a fall of 20% or more, the recovery after it, or the biggest single up or down day, the film names it and slows down on the sharpest one so you can see it happen.
 
-Three cards stay on screen the whole time: the high and low for the range, the deepest drop from a peak to the bottom that followed, and the yearly growth rate (CAGR) from the first close to the latest. For the last three seconds, a single line sums up the story: where it started, where it is now, how fast it grew each year, and the worst drop along the way.
+Three cards stay on screen the whole time: the high and low for the range, the deepest drop from a peak to the bottom that followed, and the yearly growth rate (CAGR) from the first close to the latest. Under the cards, a single line sums up the story and updates the whole time the line draws: where it started, where it is now, how fast it grew each year, and the worst drop along the way.
 
 ## Good to know
 

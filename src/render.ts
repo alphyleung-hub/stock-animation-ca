@@ -250,7 +250,7 @@ export function framePhase(frame: number): FramePhase {
   return 'travel';
 }
 
-/** One sentence for the end card. Every figure is the frame readout. */
+/** The summary sentence under the cards, live on every frame. Every figure is the frame readout. */
 export function verdictText(currency: string, readout: FrameReadout): string {
   return `${formatPrice(currency, readout.open)} → ${formatPrice(currency, readout.price)} · ${formatPercent(readout.cagr)}/yr · ${formatPercent(readout.drop)} max drop`;
 }
