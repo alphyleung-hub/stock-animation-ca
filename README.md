@@ -46,6 +46,8 @@ Stock Animation was inspired by [longbridge-remotion-charts](https://github.com/
 
 So Stock Animation is a complete rewrite from scratch, and it shares no code with that project; this was checked file by file. It uses Yahoo Finance's free daily closes instead of a brokerage feed, makes the video in your browser with WebCodecs instead of Remotion and FFmpeg, and runs free on Cloudflare with nothing to install and no account to open: visit the site, type a ticker, download the MP4. It was built with Grok Bot and Grok Build.
 
+Keith has no ties to any broker or trading company, and Stock Animation doesn't promote one. That's why it deliberately avoids any commercial brokerage API or command-line tool. You never need a trading account to use it, and nothing here encourages you to open one.
+
 This is what open source does well: people trading ideas in public and building on each other's work.
 
 ## Running it yourself

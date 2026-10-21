@@ -46,6 +46,8 @@ Stock Animation 的靈感來自 ke11 的 [longbridge-remotion-charts](https://gi
 
 因此，Stock Animation 是從零開始完全重寫的項目，與該項目沒有任何共用程式碼，並已逐個檔案核對。它改用 Yahoo Finance 免費的每日收市價，而非證券商的數據；在瀏覽器中以 WebCodecs 製作影片，完全不用 Remotion 及 FFmpeg；並免費運行於 Cloudflare，無需安裝任何東西，也無需開設帳戶：打開網站，輸入股票代號，下載 MP4 即可。本項目以 Grok Bot 及 Grok Build 打造。
 
+Keith 與任何證券商或交易公司均無關連，Stock Animation 亦不推廣任何一家。正因如此，本項目刻意不使用任何商業證券商的 API 或命令列工具。使用本項目毋須任何交易帳戶，這裏的內容亦無意鼓勵任何人開設交易帳戶。
+
 這正是開源的可貴之處：大家公開交流想法，並在彼此的成果上繼續發展。
 
 ## 自行運行
