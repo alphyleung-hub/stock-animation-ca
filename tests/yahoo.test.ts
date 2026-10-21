@@ -5,6 +5,7 @@ import {
   chartApiPath,
   chartCacheKey,
   isLookbackRange,
+  lastGoodCacheKey,
   parseLookbackRange,
   yahooChartQuery,
   yahooChartUrl,
@@ -44,13 +45,11 @@ describe('Yahoo chart URL', () => {
     expect(parseLookbackRange(' 3y ')).toBe('3y');
   });
 
-  it('puts the range in the chart path and the shared cache key', () => {
+  it('puts the range in the chart path and keys the shared cache by symbol and session only', () => {
     expect(chartApiPath('NVDA.US', '2026-10-16', '1y')).toBe('/v1/chart/NVDA.US?d=2026-10-16&range=1y');
     expect(chartApiPath('BRK.B.US', '2026-10-16', '5y')).toBe('/v1/chart/BRK.B.US?d=2026-10-16&range=5y');
-    expect(chartCacheKey('NVDA', '2026-10-16', '1y')).toBe(
-      'https://stock-animation.cache/v2/chart/NVDA?d=2026-10-16&range=1y',
-    );
-    expect(chartCacheKey('NVDA', '2026-10-16', '3y')).not.toBe(chartCacheKey('NVDA', '2026-10-16', '5y'));
-    expect(chartCacheKey('0700.HK', '2026-10-19', '5y')).not.toBe(chartCacheKey('0700.HK', '2026-10-18', '5y'));
+    expect(chartCacheKey('NVDA', '2026-10-16')).toBe('https://stock-animation.cache/v3/chart/NVDA?d=2026-10-16');
+    expect(chartCacheKey('0700.HK', '2026-10-19')).not.toBe(chartCacheKey('0700.HK', '2026-10-18'));
+    expect(lastGoodCacheKey('NVDA')).toBe('https://stock-animation.cache/v3/last/NVDA');
   });
 });

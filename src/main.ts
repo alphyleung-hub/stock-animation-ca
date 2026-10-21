@@ -3,7 +3,7 @@ import '@fontsource/geist/latin-500.css';
 import '@fontsource/geist/latin-600.css';
 import '@fontsource/geist-mono/latin-400.css';
 import '@fontsource/geist-mono/latin-500.css';
-import { parseYahooChart } from '../shared/parse';
+import { parseChartPayload } from '../shared/parse';
 import { lastCompletedSession } from '../shared/session';
 import { canonicalizeTicker, mapRelaySymbol } from '../shared/symbols';
 import { chartApiPath, isLookbackRange, LOOKBACK_RANGES, type LookbackRange } from '../shared/yahoo';
@@ -187,7 +187,7 @@ async function loadTicker(raw: string): Promise<void> {
   try {
     const session = lastCompletedSession(mapped.market, new Date());
     const payload = await fetchChart(display, session, range, abort.signal);
-    const series = parseYahooChart(payload, session);
+    const series = parseChartPayload(payload, session);
     const next = buildAnimation({
       displaySymbol: series.displaySymbol,
       name: series.name,

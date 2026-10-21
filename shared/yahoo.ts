@@ -1,5 +1,5 @@
-export const BROWSER_USER_AGENT =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+/** Sent to Yahoo so the relay says who it is. */
+export const RELAY_USER_AGENT = 'stock-animation/1.0 (+https://github.com/keithligh/stock-animation)';
 
 /** Yahoo `range` values this app will fetch. Anything else is rejected. */
 export const LOOKBACK_RANGES = ['1y', '3y', '5y'] as const;
@@ -37,9 +37,17 @@ export function chartApiPath(symbol: string, sessionDate: string, range: Lookbac
 }
 
 /**
- * Shared Cache API key: Yahoo symbol + session date + range.
- * Alias spellings of one symbol share an entry. 1y, 3y, and 5y do not.
+ * Cache API key for the reduced 5y chart of one Yahoo symbol and session date.
+ * Alias spellings of one symbol share an entry; 1y and 3y are cut from it.
  */
-export function chartCacheKey(yahooSymbol: string, sessionDate: string, range: LookbackRange): string {
-  return `https://stock-animation.cache/v2/chart/${yahooSymbol}?d=${sessionDate}&range=${range}`;
+export function chartCacheKey(yahooSymbol: string, sessionDate: string): string {
+  return `https://stock-animation.cache/v3/chart/${yahooSymbol}?d=${sessionDate}`;
 }
+
+/** Cache API key for the last good reduced 5y chart of a symbol, any session date. */
+export function lastGoodCacheKey(yahooSymbol: string): string {
+  return `https://stock-animation.cache/v3/last/${yahooSymbol}`;
+}
+
+/** Cache API key for the pause after Yahoo answers 429 or 5xx. */
+export const BACKOFF_CACHE_KEY = 'https://stock-animation.cache/v3/backoff';

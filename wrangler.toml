@@ -3,12 +3,12 @@ main = "workers/api/src/index.ts"
 compatibility_date = "2026-10-19"
 workers_dev = true
 
-# Workers Cache sits in front of the Worker. A hit never runs it and never
-# calls Yahoo. The request URL is that cache key, so `d` and `range` stay apart.
-# The Worker also stores one Cache API entry per Yahoo symbol, `d`, and range,
-# so alias spellings of the same range share one Yahoo fetch.
+# Workers Caching stays off so the Worker runs on every request and checks it
+# comes from the app's page before any cached chart is returned. The Worker
+# caches with the Cache API instead: one reduced 5y entry per Yahoo symbol and
+# session date `d`, which also serves 1y and 3y.
 [cache]
-enabled = true
+enabled = false
 
 # `npx wrangler deploy` builds the static app, then uploads this Worker.
 [build]
