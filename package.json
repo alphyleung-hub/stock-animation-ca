@@ -1,5 +1,8 @@
 {
   "name": "stock-animation",
+  "description": "Turn a stock's daily closes into a 30-second animated chart you can download as an MP4.",
+  "license": "MIT",
+  "author": "Keith Li",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,7 +17,7 @@
     "concurrently": "^10.0.6",
     "typescript": "^5.9.3",
     "vite": "^7.3.7",
-    "vitest": "^3.2.4",
+    "vitest": "^4.1.12",
     "wrangler": "^4.69.0"
   },
   "dependencies": {
