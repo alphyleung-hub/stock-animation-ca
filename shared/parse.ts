@@ -23,10 +23,6 @@ export interface ParsedSeries {
   source: 'yahoo';
 }
 
-export type DecodedDrop =
-  | { kind: 'yahoo'; series: ParsedSeries }
-  | { kind: 'csv'; bars: Bar[] };
-
 export class ParseError extends Error {
   constructor(message: string) {
     super(message);
@@ -127,50 +123,6 @@ function parseDividends(result: YahooResult, timeZone: string, sessionDate: stri
     .map(([date, amount]) => ({ date, amount }));
 }
 
-/** `date,close` rows. A header is optional. Every valid row is kept. */
-export function parseCsv(text: string): Bar[] {
-  const lines = stripBom(text).split(/\r?\n/);
-  const bars: Bar[] = [];
-  let sawHeader = false;
-  for (const raw of lines) {
-    const line = raw.trim();
-    if (!line) continue;
-    const [dateCell, closeCell] = splitCsvRow(line);
-    if (!dateCell || closeCell === undefined) continue;
-    if (!isIsoDate(dateCell)) {
-      if (!sawHeader && bars.length === 0 && /^date$/i.test(dateCell)) {
-        sawHeader = true;
-        continue;
-      }
-      throw new ParseError(`CSV row is not date,close: ${line}`);
-    }
-    const close = Number(closeCell);
-    if (!Number.isFinite(close)) throw new ParseError(`CSV close is not a number: ${line}`);
-    bars.push({ date: dateCell, close });
-  }
-  if (bars.length === 0) throw new ParseError('CSV has no rows');
-  bars.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
-  const unique = new Map<string, number>();
-  for (const bar of bars) unique.set(bar.date, bar.close);
-  return [...unique.entries()].map(([date, close]) => ({ date, close }));
-}
-
-/** Sniff a dropped or pasted file. JSON is Yahoo; anything else is CSV. */
-export function decodeDroppedText(text: string, sessionDate: string): DecodedDrop {
-  const body = stripBom(text).trim();
-  if (!body) throw new ParseError('empty data');
-  if (body.startsWith('{') || body.startsWith('[')) {
-    let payload: unknown;
-    try {
-      payload = JSON.parse(body) as unknown;
-    } catch {
-      throw new ParseError('file looks like JSON but did not parse');
-    }
-    return { kind: 'yahoo', series: parseYahooChart(payload, sessionDate) };
-  }
-  return { kind: 'csv', bars: parseCsv(body) };
-}
-
 function asYahoo(payload: unknown): NonNullable<YahooPayload['chart']> {
   if (!payload || typeof payload !== 'object') throw new ParseError('Yahoo payload is not an object');
   const chart = (payload as YahooPayload).chart;
@@ -202,13 +154,4 @@ function defaultZone(market: Market): string {
       throw new ParseError(`unknown market ${never}`);
     }
   }
-}
-
-function stripBom(text: string): string {
-  return text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
-}
-
-function splitCsvRow(line: string): [string | undefined, string | undefined] {
-  const cells = line.split(',').map((cell) => cell.trim());
-  return [cells[0], cells[1]];
 }

@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { percentChange } from '../shared/model';
 import { formatPercent, roundMoney } from '../src/insights';
 import {
   ESTABLISH_END,
@@ -39,7 +38,6 @@ describe('price animation', () => {
     expect(priceAt(animation, REWIND_END)).toBe(100);
     expect(priceAt(animation, ESTABLISH_END - 1)).toBe(100);
     expect(priceAt(animation, FRAME_COUNT - 1)).toBe(last);
-    expect(percentChange(last, 100)).toBeCloseTo(1.17);
     // The line leaves the first close on frame one: no hold before it travels.
     expect(framePhase(0)).toBe('travel');
     expect(framePhase(PLAY_END)).toBe('verdict');

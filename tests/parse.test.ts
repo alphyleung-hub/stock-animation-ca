@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ParseError, decodeDroppedText, parseCsv, parseYahooChart } from '../shared/parse';
+import { ParseError, parseYahooChart } from '../shared/parse';
 
 const JUNE3_OPEN = Date.parse('2024-06-03T13:30:00Z') / 1000;
 
@@ -122,36 +122,5 @@ describe('Yahoo parser', () => {
 
   it('surfaces a Yahoo error payload', () => {
     expect(() => parseYahooChart(yahoo({ error: 'Not Found' }), '2024-06-03')).toThrow(ParseError);
-  });
-});
-
-describe('CSV parser', () => {
-  it('accepts a header and keeps date,close rows', () => {
-    expect(parseCsv('date,close\n2024-06-03,115\n2024-06-04,120.5\n')).toEqual([
-      { date: '2024-06-03', close: 115 },
-      { date: '2024-06-04', close: 120.5 },
-    ]);
-  });
-
-  it('accepts rows without a header and sorts them', () => {
-    expect(parseCsv('2024-06-04,120\n2024-06-03,115')).toEqual([
-      { date: '2024-06-03', close: 115 },
-      { date: '2024-06-04', close: 120 },
-    ]);
-  });
-
-  it('rejects a row that is not a date and a number', () => {
-    expect(() => parseCsv('hello,world')).toThrow(ParseError);
-    expect(() => parseCsv('')).toThrow(ParseError);
-  });
-});
-
-describe('dropped text', () => {
-  it('sniffs Yahoo JSON and CSV', () => {
-    const json = decodeDroppedText(JSON.stringify(yahoo()), '2024-06-03');
-    expect(json.kind).toBe('yahoo');
-    if (json.kind === 'yahoo') expect(json.series.yahooSymbol).toBe('NVDA');
-    const csv = decodeDroppedText('date,close\n2024-06-03,1\n', '2024-06-03');
-    expect(csv).toEqual({ kind: 'csv', bars: [{ date: '2024-06-03', close: 1 }] });
   });
 });
