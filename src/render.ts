@@ -88,7 +88,6 @@ const CARD_Y = 28;
 const UP = '#3DDC97';
 const DOWN = '#FF5D6C';
 const INK = '#f7f8fb';
-const MUTED = '#9aa3b5';
 
 let viewLeft = 0;
 let viewRight = 1;
@@ -313,106 +312,6 @@ export function drawFrame(ctx: Ctx, animation: Animation, frame: number): void {
   if (phase !== 'hook') drawAnnotations(ctx, animation, readout, index, points);
   drawSource(ctx);
   ctx.globalAlpha = 1;
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-}
-
-export function drawPoster(ctx: Ctx): void {
-  const canvas = ctx.canvas;
-  ctx.setTransform(canvas.width / WIDTH, 0, 0, canvas.height / HEIGHT, 0, 0);
-  ctx.globalAlpha = 1;
-  ctx.setLineDash([]);
-  fillStage(ctx);
-
-  const frame = { x: 48, y: 56, w: 1824, h: 968 };
-  roundRect(ctx, frame.x, frame.y, frame.w, frame.h, 16);
-  ctx.fillStyle = 'rgba(255,255,255,0.035)';
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = INK;
-  ctx.font = '600 40px Geist, sans-serif';
-  ctx.fillText('One share price', 96, 148);
-  ctx.font = '500 20px Geist, sans-serif';
-  ctx.fillStyle = '#d5dbe6';
-  ctx.fillText('From the first close to the last.', 96, 188);
-
-  const examples = ['NVDA', 'AAPL', '0700.HK'];
-  ctx.font = '500 18px "Geist Mono", monospace';
-  let cursor = 96;
-  const chipY = 236;
-  for (const example of examples) {
-    const width = ctx.measureText(example).width;
-    roundRect(ctx, cursor - 14, chipY - 22, width + 28, 34, 8);
-    ctx.fillStyle = 'rgba(255,255,255,0.05)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.16)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    ctx.fillStyle = INK;
-    ctx.fillText(example, cursor, chipY);
-    cursor += width + 52;
-  }
-
-  const plot = { x: 168, y: 360, w: 1624, h: 560 };
-  const axisY = plot.y + 470;
-  const years = ["Oct '21", "Oct '22", "Oct '23", "Oct '24", "Oct '25", "Oct '26"];
-
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = INK;
-  ctx.font = '600 32px Geist, sans-serif';
-  ctx.fillText('Opens on the first close.', plot.x, plot.y + 56);
-  ctx.font = '500 20px Geist, sans-serif';
-  ctx.fillStyle = '#d5dbe6';
-  ctx.fillText('The price travels. The last frame states the path.', plot.x, plot.y + 96);
-
-  ctx.strokeStyle = 'rgba(255,255,255,0.07)';
-  ctx.lineWidth = 1;
-  years.forEach((year, index) => {
-    const x = plot.x + (plot.w * index) / (years.length - 1);
-    ctx.beginPath();
-    ctx.moveTo(x, plot.y + 176);
-    ctx.lineTo(x, axisY);
-    ctx.stroke();
-  });
-
-  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-  ctx.beginPath();
-  ctx.moveTo(plot.x, axisY);
-  ctx.lineTo(plot.x + plot.w, axisY);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.fillStyle = INK;
-  ctx.arc(plot.x + 8, axisY, 6, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.setLineDash([2, 7]);
-  ctx.strokeStyle = 'rgba(247,248,251,0.75)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(plot.x + 8, axisY);
-  ctx.lineTo(plot.x + 132, axisY);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  ctx.font = '500 18px "Geist Mono", monospace';
-  ctx.fillStyle = '#d5dbe6';
-  ctx.textBaseline = 'top';
-  years.forEach((year, index) => {
-    const x = plot.x + (plot.w * index) / (years.length - 1);
-    ctx.textAlign = index === 0 ? 'left' : index === years.length - 1 ? 'right' : 'center';
-    ctx.fillText(year, x, axisY + 22);
-  });
-
-  ctx.font = '500 16px Geist, sans-serif';
-  ctx.fillStyle = '#d5dbe6';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'alphabetic';
-  ctx.fillText('Data: Yahoo Finance', WIDTH - 72, frame.y + frame.h - 28);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
@@ -1039,7 +938,7 @@ function searchClampedSlots(
   function scan(respectAvoid: boolean): Box | null {
     if (mark.w > bounds.w - 16 || mark.h > bounds.h - 16) return null;
     for (const gap of [16, 28, 44, 72, 108]) {
-      for (const side of sideOrder(mark.kind, mark.ax, mark.ay, bounds)) {
+      for (const side of sideOrder(mark.kind, mark.ay, bounds)) {
         const origin = slotOrigin(side, mark.ax, mark.ay, mark.w, mark.h, gap);
         const box = clampBox({ x: origin.x, y: origin.y, w: mark.w, h: mark.h }, bounds, 8);
         if (respectAvoid && avoidX != null && coversX(box, avoidX)) continue;
@@ -1081,7 +980,7 @@ function searchNearSlots(
 
   function scan(respectAvoid: boolean): Box | null {
     for (const gap of [16, 28, 44, 72]) {
-      for (const side of sideOrder(mark.kind, mark.ax, mark.ay, bounds)) {
+      for (const side of sideOrder(mark.kind, mark.ay, bounds)) {
         const origin = slotOrigin(side, mark.ax, mark.ay, mark.w, mark.h, gap);
         const box = { x: origin.x, y: origin.y, w: mark.w, h: mark.h };
         if (!boxInside(box, bounds, 6)) continue;
@@ -1253,7 +1152,7 @@ function measureMark(ctx: Ctx, mark: Mark): { w: number; h: number } {
   return { w: textW + 12, h: 32 };
 }
 
-function sideOrder(kind: MarkKind, ax: number, ay: number, bounds: Box): SlotSide[] {
+function sideOrder(kind: MarkKind, ay: number, bounds: Box): SlotSide[] {
   const roomAbove = ay - bounds.y;
   const roomBelow = bounds.y + bounds.h - ay;
   const above: SlotSide[] = ['above', 'aboveLeft', 'aboveRight'];

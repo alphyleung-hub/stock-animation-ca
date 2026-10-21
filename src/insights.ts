@@ -191,7 +191,7 @@ export function detectEvents(
   }
   pushDrawdown(events, prices, dates, peak, trough, null, currency);
   pushStartRecoveries(events, prices, dates, currency);
-  pushBiggestDays(events, prices, dates, currency);
+  pushBiggestDays(events, prices, dates);
   pushDividends(events, prices, dates, dividends, currency);
 
   events.sort((a, b) => a.index - b.index || a.priority - b.priority || b.score - a.score);
@@ -270,23 +270,6 @@ export function activeCallout(schedule: readonly VisibleCallout[], frame: number
   return schedule.find((item) => frame >= item.startFrame && frame < item.endFrame) ?? null;
 }
 
-export function zoomSeries(schedule: readonly VisibleCallout[]): Float64Array {
-  const zoom = new Float64Array(FRAME_COUNT);
-  let value = 1;
-  let velocity = 0;
-  for (let frame = 0; frame < FRAME_COUNT; frame += 1) {
-    const beat = schedule.some(
-      (item) => item.kind !== 'dividend' && frame >= item.startFrame && frame < item.endFrame,
-    );
-    const target = frame >= PLAY_END ? 0.978 : beat ? 1.036 : 1;
-    const step = stepSpring(value, velocity, target, 1 / FPS, 5.5);
-    value = step.value;
-    velocity = step.velocity;
-    zoom[frame] = value;
-  }
-  return zoom;
-}
-
 /** Critically damped approach from 0 to 1. Starts and ends at rest, never overshoots. */
 export function damp(seconds: number, omega = 14): number {
   if (seconds <= 0) return 0;
@@ -314,14 +297,6 @@ export function easeInOut(unit: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 }
 
-export function hookPlate(frame: number): number {
-  const fadeStart = HOOK_END - 10;
-  const fadeEnd = HOOK_END + 20;
-  if (frame <= fadeStart) return 1;
-  if (frame >= fadeEnd) return 0;
-  return 1 - easeInOut((frame - fadeStart) / (fadeEnd - fadeStart));
-}
-
 /** Share prices used on screen, rounded half-up to the cent. */
 export function roundMoney(value: number): number {
   if (!Number.isFinite(value)) return 0;
@@ -342,19 +317,6 @@ export function formatSignedPrice(currency: string, value: number): string {
   return body;
 }
 
-export function formatWhole(currency: string, value: number): string {
-  const rounded = Math.round(value);
-  const amount = Math.abs(rounded) < 1 ? 0 : Math.abs(rounded);
-  return signedMoney(currency, rounded, amount.toLocaleString('en-US'));
-}
-
-export function formatSignedWhole(currency: string, value: number): string {
-  const body = formatWhole(currency, Math.abs(value));
-  if (value > 0.5) return `+${body}`;
-  if (value < -0.5) return `−${body}`;
-  return body;
-}
-
 export function formatPercent(fraction: number, digits = 2): string {
   const pct = fraction * 100;
   const text = Math.abs(pct).toFixed(digits);
@@ -363,25 +325,11 @@ export function formatPercent(fraction: number, digits = 2): string {
   return `${(0).toFixed(digits)}%`;
 }
 
-export function drawdownCalloutText(depth: number, peakDate: string, troughDate: string): string {
-  return `${formatPercent(depth)} ${inPhrase(peakDate, troughDate)}`;
-}
-
 export function formatRoundedPercent(fraction: number): string {
   const pct = Math.round(fraction * 100);
   if (pct > 0) return `+${pct}%`;
   if (pct < 0) return `−${Math.abs(pct)}%`;
   return '0%';
-}
-
-export function formatCompact(currency: string, value: number): string {
-  const abs = Math.abs(value);
-  if (abs >= 1000) {
-    const scaled = abs / 1000;
-    const digits = scaled >= 100 ? 0 : 1;
-    return signedMoney(currency, value, `${scaled.toFixed(digits)}k`);
-  }
-  return signedMoney(currency, value, Math.round(abs).toLocaleString('en-US'));
 }
 
 export function formatMonthStamp(iso: string): string {
@@ -402,11 +350,6 @@ export function formatLongDate(iso: string): string {
 export function formatShortMonth(iso: string): string {
   const [year, month] = iso.split('-');
   return `${monthName(month)} ${(year ?? '').slice(2)}`;
-}
-
-export function formatMonthDay(iso: string): string {
-  const [, month, day] = iso.split('-');
-  return `${monthName(month)} ${Number(day) || 1}`;
 }
 
 function pushDrawdown(
@@ -482,7 +425,7 @@ function pushStartRecoveries(
   }
 }
 
-function pushBiggestDays(events: MarketEvent[], prices: readonly number[], dates: readonly string[], currency: string): void {
+function pushBiggestDays(events: MarketEvent[], prices: readonly number[], dates: readonly string[]): void {
   let upIndex = -1;
   let upChange = 0;
   let downIndex = -1;

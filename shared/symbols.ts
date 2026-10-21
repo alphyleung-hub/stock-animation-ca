@@ -63,10 +63,6 @@ export function canonicalizeTicker(input: string): string | null {
   return null;
 }
 
-export function marketOfDisplay(display: string): Market | null {
-  return mapRelaySymbol(display)?.market ?? null;
-}
-
 /** True when a Yahoo `meta.symbol` belongs to a canonical display ticker. */
 export function symbolsMatch(display: string, yahooMetaSymbol: string): boolean {
   const mapped = mapRelaySymbol(display);

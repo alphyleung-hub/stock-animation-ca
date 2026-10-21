@@ -3,7 +3,6 @@ import {
   CALLOUT_FRAMES,
   ESTABLISH_END,
   FRAME_COUNT,
-  HOOK_END,
   LEAD_FRAMES,
   damp,
   detectEvents,

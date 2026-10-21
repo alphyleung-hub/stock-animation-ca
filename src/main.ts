@@ -359,7 +359,6 @@ function startPlayback(): void {
 function tick(now: number, gen: number): void {
   if (gen !== generation || !playing || !animation) return;
   const frame = frameAt(now, clockStart, playbackRate, FRAME_COUNT);
-  if (gen !== generation || !playing || !animation) return;
   shownFrame = frame;
   drawFrame(context, animation, frame);
   if (frame >= FRAME_COUNT - 1) {
