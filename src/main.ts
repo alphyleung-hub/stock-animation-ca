@@ -156,39 +156,6 @@ downloadButton.addEventListener('click', () => {
   if (animation) void download(animation);
 });
 
-window.__anim = {
-  get frameCount() {
-    return FRAME_COUNT;
-  },
-  get hookFrame() {
-    return animation?.hookFrame ?? 72;
-  },
-  get calloutFrame() {
-    return animation?.calloutFrame ?? 0;
-  },
-  seek(frame: number) {
-    if (!animation) return;
-    playing = false;
-    shownFrame = frame;
-    drawFrame(context, animation, frame);
-    syncTransport();
-  },
-  finish() {
-    if (!animation) return;
-    playing = false;
-    generation += 1;
-    shownFrame = FRAME_COUNT - 1;
-    drawFrame(context, animation, FRAME_COUNT - 1);
-    markFinished();
-  },
-  get frame() {
-    return shownFrame;
-  },
-  get rate() {
-    return playbackRate;
-  },
-};
-
 if (!tickerInput.value.trim()) tickerInput.value = 'NVDA';
 void loadTicker(tickerInput.value);
 
@@ -523,18 +490,4 @@ function friendlyRelay(code: string | undefined, statusCode: number): string {
 
 function labelFor(symbol: string): string {
   return symbol.endsWith('.US') ? symbol.slice(0, -3) : symbol;
-}
-
-declare global {
-  interface Window {
-    __anim?: {
-      readonly frameCount: number;
-      readonly hookFrame: number;
-      readonly calloutFrame: number;
-      seek(frame: number): void;
-      finish(): void;
-      readonly frame: number;
-      readonly rate: number;
-    };
-  }
 }
